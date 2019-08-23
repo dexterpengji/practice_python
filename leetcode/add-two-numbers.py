@@ -18,11 +18,39 @@ class ListNode:
         self.val = x
         self.next = None
 
+    def showAllNodes(self):
+        node_obj = self
+        chainMark = ""
+        while node_obj is not None:
+            print(chainMark + "%d" % node_obj.val, end="")
+            node_obj = node_obj.next
+            chainMark = " -> "
+        print("")
 
-l_1 = ListNode(1)
-l_2 = l_1.next = ListNode(2)
-l_3 = l_2.next = ListNode(3)
 
-print(l_1.val)
-print(l_1.next.val)
-print(l_1.next.next.val)
+def addTwoNumbers(l1: ListNode, l2: ListNode, highDigit=0) -> ListNode:
+    if l1 is not None or l2 is not None or highDigit != 0:
+        if l1 is None:
+            l1 = ListNode(0)
+        if l2 is None:
+            l2 = ListNode(0)
+        sum_pre = (l1.val + l2.val + highDigit)
+        sum_nod, highDigit = sum_pre % 10, sum_pre // 10
+        ret = ListNode(int(sum_nod))
+        ret.next = addTwoNumbers(l1.next, l2.next, highDigit)
+        return ret
+
+
+L1 = ListNode(2)
+L1.next = ListNode(4)
+L1.next.next = ListNode(3)
+
+L2 = ListNode(5)
+L2.next = ListNode(6)
+L2.next.next = ListNode(4)
+
+L1.showAllNodes()
+L2.showAllNodes()
+
+L3 = addTwoNumbers(L1, L2)
+L3.showAllNodes()
