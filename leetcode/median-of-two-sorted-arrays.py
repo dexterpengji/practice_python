@@ -19,6 +19,7 @@ nums2 = [2]
 The median is (2 + 3)/2 = 2.5
 """
 
+
 # time complexity: O(log(M+N))
 def findMedianSortedArrays(nums1, nums2):
     nums1.extend(nums2)
