@@ -28,6 +28,7 @@ class ListNode:
         print("")
 
 
+# time complexity: O(n)
 def addTwoNumbers(l1: ListNode, l2: ListNode, highDigit=0) -> ListNode:
     if l1 is not None or l2 is not None or highDigit != 0:
         if l1 is None:
