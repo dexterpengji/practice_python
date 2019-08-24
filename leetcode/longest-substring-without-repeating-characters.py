@@ -21,24 +21,28 @@ Explanation: The answer is "wke", with the length of 3.
 
 
 def lengthOfLongestSubstring(s: str) -> int:
-    len_s = len(s)
-    ret_tempt, ret = 1, len_s
-    for i in range(len_s):
-        char_step = s[i]
-        for j in range(i + 1, len_s):
-            char_check = s[j]
-            len_now = j - i + 1
-            if char_check == char_step:
-                print("%s ===" % char_check)
-                if len_now > ret_tempt:
-                    ret_tempt = len_now
-                break
-            else:
-                pass
-        if ret_tempt < ret:
-            ret = ret_tempt
-    return ret
+    dic = {}
+    max_global = max_local = head_cur = 0
+    for i, x in enumerate(s):
+        if x in dic and dic[x] >= head_cur:
+            max_global = max(max_global, max_local)
+            max_local = i - dic[x]
+            head_cur = dic[x] + 1
+        else:
+            max_local += 1
+        dic[x] = i
+    return max(max_global, max_local)
 
 
-string = "abcdef"
+string = "abba"         # 2
+print(lengthOfLongestSubstring(string))
+string = "dvdf"         # 3
+print(lengthOfLongestSubstring(string))
+string = "bbbbbb"       # 1
+print(lengthOfLongestSubstring(string))
+string = "pwwkew"       # 3
+print(lengthOfLongestSubstring(string))
+string = "abcdef"       # 6
+print(lengthOfLongestSubstring(string))
+string = "abcabcbb"     # 3
 print(lengthOfLongestSubstring(string))
