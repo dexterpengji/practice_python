@@ -47,4 +47,5 @@ def isPalindrome(x: int) -> bool:
         return False
 
 inp = 121
+
 print(isPalindrome(inp))
