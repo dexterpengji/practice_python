@@ -96,7 +96,8 @@ def isValid_abandoned(s: str) -> bool:
 
 # time complexity: O(n) | 32ms
 def isValid(s: str) -> bool:
-    dic, openingBrackets = {")": "(", "}": "{", "]": "["}, []
+    dic = {")": "(", "}": "{", "]": "["}
+    openingBrackets = []
     for x in s:
         if x in dic:
             end_s = openingBrackets.pop() if openingBrackets else '#'
