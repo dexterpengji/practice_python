@@ -98,14 +98,16 @@ def isValid_abandoned(s: str) -> bool:
 def isValid(s: str) -> bool:
     dic = {")": "(", "}": "{", "]": "["}
     openingBrackets = []
-    for x in s:
-        if x in dic:
+    for x in s:     # check one by one
+        if x in dic:    # if an end is detected
+            # if an end is detected, check if there was a start with it
+            # yes: pop, no: give it a non-sense one
             end_s = openingBrackets.pop() if openingBrackets else '#'
-            if dic[x] != end_s:
-                return False
+            if dic[x] != end_s:     # if it's not equal to the key's value in dic
+                return False        # Then False
         else:
-            openingBrackets.append(x)
-    return not openingBrackets
+            openingBrackets.append(x)       # if it's not an end, it must be a start
+    return not openingBrackets      # check if all brackets' start have found their end
 
 
 inp = "{({[]})[[]{}]}"
