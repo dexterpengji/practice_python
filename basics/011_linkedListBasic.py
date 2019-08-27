@@ -159,6 +159,19 @@ class LinkedList(object):
         return
 
 
+def showListNode(LN):
+    while LN:
+        print(LN.val)
+        LN = LN.next
+
+
+def showListNodeBackward(LN):
+    if LN is None:
+        return
+    showListNodeBackward(LN.next)
+    print(LN.val)
+
+
 if __name__ == "__main__":
     A = Node(1)
     L_A = LinkedList(A)
