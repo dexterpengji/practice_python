@@ -1,18 +1,82 @@
 import os
-path_source = 'source/'
+import matplotlab.pyplot as plt
 
-# get the list of file names
-fileList = os.listdir(path_source)
-fileList.sort()
-print(fileList)
 
-# get the words from all files
-"""
-for i, x in enumerate(fileList):
-    with open(path_source + os.sep + x, mode="r") as file:
-        content_fulltext = file.read()
-        print(content_fulltext)
-    print(x)
-    break
+# get a sentence from a line of whole source text
+def getSentence(singleLine, beg):
+    index_begin = singleLine.find(beg)
+    if index_begin is not -1:
+        # cut to get raw sentence
+        sentence_raw = single_line[index_begin + l_sub_beg:-5]
+        # remove redundant punctuations
+        sentence_ret = sentence_raw.replace(",", " ")
+        sentence_ret = sentence_ret.replace(".", " ")
+        sentence_ret = sentence_ret.replace("?", " ")
+        sentence_ret = sentence_ret.replace("\"", " ")
+        sentence_ret = sentence_ret.replace(":", " ")
+        sentence_ret = sentence_ret.replace("-", " ")
+        sentence_ret = sentence_ret.replace("!", " ")
+        return sentence_ret
+    else:
+        return None
 
-"""
+
+if __name__ == "__main__":
+    # var settings
+    path_source = 'source/'
+    sub_beg_all = "{\\fnTahoma\\fs11\\bord1\\shad1\\1c&HC0C0C0&\\b0}"
+    sub_beg = "{\\fnTahoma"
+    l_sub_beg = len(sub_beg_all)
+    dic = {}
+    error_decode = []
+
+    # get the list of file names
+    fileList = os.listdir(path_source)
+    fileList.sort()
+
+    # get the words from all files
+    for x in fileList:
+        # read single file
+        print("processing file: %s" % x)
+        if x[0] != "S":
+            print("skip file: %s" % x)
+            continue
+        with open(path_source + os.sep + x, mode="r+") as file:
+            try:
+                content_fulltext = file.readlines()
+            except UnicodeDecodeError:
+                error_decode.append(x)
+                continue
+
+        # get valid sentences as a list
+        for single_line in content_fulltext:
+            sentence_got = getSentence(single_line, sub_beg)
+            if sentence_got:
+                for single_word in sentence_got.split(" "):
+                    if len(single_word) != 0:
+                        single_word = single_word.lower()
+                        try:
+                            dic[single_word] += 1
+                        except KeyError:
+                            dic[single_word] = 1
+                    else:
+                        continue
+            else:
+                continue
+
+        print(dic)
+
+    # print report
+    print("")
+    print("==== decode error ====")
+    print(error_decode)
+
+    print("")
+    print("==== sorted ====")
+    sorted_list = sorted(dic.items(), key=lambda obj: obj[1])
+    print(sorted_list[::-1])
+
+    print("")
+    print("==== 100 most popular words ====")
+    for i in range(100):
+        print(sorted_list[-i-1])
