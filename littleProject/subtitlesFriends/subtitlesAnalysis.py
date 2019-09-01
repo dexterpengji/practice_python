@@ -1,5 +1,6 @@
 import os
-import matplotlab.pyplot as plt
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 # get a sentence from a line of whole source text
@@ -59,11 +60,6 @@ if __name__ == "__main__":
                             dic[single_word] += 1
                         except KeyError:
                             dic[single_word] = 1
-                    else:
-                        continue
-            else:
-                continue
-
         print(dic)
 
     # print report
@@ -78,5 +74,32 @@ if __name__ == "__main__":
 
     print("")
     print("==== 100 most popular words ====")
+
+    # start to plot
+    Xs = []
+    Ys = []
+    TextPlt = []
     for i in range(100):
         print(sorted_list[-i-1])
+        TextPlt.append(sorted_list[-i-1][0])
+        Xs.append(i)
+        Ys.append(sorted_list[-i - 1][1])
+    print(len(Xs))
+    print(len(Ys))
+
+    plt.bar(Xs, Ys)
+
+    plt.xlim(-1, 100)
+    plt.xticks(())
+    plt.ylim(0, 25000)
+    plt.yticks(())
+
+    plt.bar(Xs, Ys, facecolor='#9999ff', edgecolor='white')
+
+    for x, y, t in zip(Xs, Ys, TextPlt):
+        # ha: horizontal alignment
+        # va: vertical alignment
+        plt.text(x, y + 5, y, ha='center', va='bottom')
+        plt.text(x, 0, t, ha='center', va='bottom')
+
+    plt.show()
