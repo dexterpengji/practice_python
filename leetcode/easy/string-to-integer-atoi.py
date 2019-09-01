@@ -43,54 +43,83 @@ Therefore INT_MIN (−231) is returned.
 """
 
 
-def myAtoi(str: str) -> int:
-    ret, sign = 0, 1
-    if len(str) > 0:
-        while str[0] == " ":
-            str = str[1:]
-            if len(str) == 0:
-                return 0
-        if str[0] != "-":
-            try:
-                echo = int(str[0])
-            except ValueError:
-                return 0
-        else:
-            sign = -1
-            str = str[1:]
-        for i, x in enumerate(str):
-            try:
-                echo = int(x)
-            except ValueError:
-                ret = int(str[:i]) * sign
-                if - 2 ** 31 <= ret <= 2 ** 31 -1:
-                    return ret
-                elif - 2 ** 31 > ret:
-                    return -2147483648
-                else:
-                    return 2147483647
-        try:
-            ret = int(str) * sign
-            if - 2 ** 31 <= ret <= 2 ** 31 - 1:
-                return ret
-            elif - 2 ** 31 > ret:
-                return -2147483648
-            else:
-                return 2147483647
-        except ValueError:
-            return 0
-    else:
+def myAtoi(str: str) -> int:    # Overflow happens a lot
+    # vars setting
+    digits, digits_lock, sign, sign_lock = 0, 0, +1, 0
+
+    # first part:
+    str = str.strip()   # delete all blacks
+    if len(str) == 0:   # return 0 if string is none
         return 0
 
+    # second part:
+    for x in str:
+        try:
+            digits, sign_lock = digits * 10 + int(x), 1
 
-inp = "42"
-inp = "     -42"
-inp = "4193 with words"
-inp = ""
-inp = "words and 987"
-inp = "-91283472332"
-inp = "   -"
-inp = " "
-inp = "-+1"
+            # check if it overflows
+            ret = digits * sign
+            if ret >= 2 ** 31 - 1:
+                return 2 ** 31 - 1
+            elif ret <= - 2 ** 31:
+                return - 2 ** 31
+
+        except ValueError:
+            if x == "+":
+                if sign_lock == 0:
+                    sign_lock = 1
+                else:
+                    return digits * sign
+            elif x == "-":
+                if sign_lock == 0:
+                    sign, sign_lock = -1, 1
+                else:
+                    return digits * sign
+            else:
+                return digits * sign
+
+    return digits * sign
+
+
+def myAtoi(str: str) -> int:    # Overflow barely happens
+    # vars setting
+    digits, digits_lock, sign, sign_lock = 0, 0, +1, 0
+
+    # first part:
+    str = str.strip()   # delete all blacks
+    if len(str) == 0:   # return 0 if string is none
+        return 0
+
+    # second part:
+    for x in str:
+        try:
+            digits, sign_lock = digits * 10 + int(x), 1
+
+        except ValueError:
+            if x == "+":
+                if sign_lock == 0:
+                    sign_lock = 1
+                else:
+                    return min(max(digits * sign, - 2 ** 31), 2 ** 31 - 1)
+            elif x == "-":
+                if sign_lock == 0:
+                    sign, sign_lock = -1, 1
+                else:
+                    return min(max(digits * sign, - 2 ** 31), 2 ** 31 - 1)
+            else:
+                return min(max(digits * sign, - 2 ** 31), 2 ** 31 - 1)
+
+    return min(max(digits * sign, - 2 ** 31), 2 ** 31 - 1)
+
+
+# inp = "42"
+# inp = "     -42"
+# inp = "4193 with words"
+# inp = ""
+# inp = "words and 987"
+# inp = "91283472332"
+# inp = "   -"
+# inp = " "
+inp = "        -+1"
 print(myAtoi(inp))
 
