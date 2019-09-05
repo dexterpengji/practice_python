@@ -94,12 +94,14 @@ if __name__ == "__main__":
     plt.xlim(0, 25000)
     plt.xticks(())
 
-    plt.barh(Xs, Ys[::-1], facecolor='#9999ff', edgecolor='white')
+    plt.barh(Xs, Ys[::-1], facecolor='#9999ff', edgecolor='gray')
 
     for y, x, t in zip(Ys[::-1], Xs, TextPlt[::-1]):
         # ha: horizontal alignment
         # va: vertical alignment
+        # plot numbers
         plt.text(y, x, "  " + str(y), ha='left', va='center', color="#555555")
+        # plot words
         plt.text(0, x, t + "  ", ha='right', va='center', color="#333333")
 
     plt.title('100 most popular words in Friends', loc='center', fontsize='10', fontweight='bold', color='gray')
