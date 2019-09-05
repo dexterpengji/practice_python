@@ -87,19 +87,20 @@ if __name__ == "__main__":
     print(len(Xs))
     print(len(Ys))
 
-    plt.bar(Xs, Ys)
+    plt.figure(figsize=(10, 30))
 
-    plt.xlim(-1, 100)
-    plt.xticks(())
-    plt.ylim(0, 25000)
+    plt.ylim(-1, 100)
     plt.yticks(())
+    plt.xlim(0, 25000)
+    plt.xticks(())
 
-    plt.bar(Xs, Ys, facecolor='#9999ff', edgecolor='white')
+    plt.barh(Xs, Ys[::-1], facecolor='#9999ff', edgecolor='white')
 
-    for x, y, t in zip(Xs, Ys, TextPlt):
+    for y, x, t in zip(Ys[::-1], Xs, TextPlt[::-1]):
         # ha: horizontal alignment
         # va: vertical alignment
-        plt.text(x, y + 5, y, ha='center', va='bottom')
-        plt.text(x, 0, t, ha='center', va='bottom')
+        plt.text(y, x, "  " + str(y), ha='left', va='center', color="#555555")
+        plt.text(0, x, t + "  ", ha='right', va='center', color="#333333")
 
-    plt.show()
+    plt.title('100 most popular words in Friends', loc='center', fontsize='10', fontweight='bold', color='gray')
+    plt.savefig("result.png", dpi=300)
