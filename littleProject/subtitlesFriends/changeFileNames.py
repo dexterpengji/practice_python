@@ -1,4 +1,6 @@
 import os
+# Use mac/ubuntu to run this script
+
 path = 'source/'
 
 # get the list of file names
