@@ -22,7 +22,7 @@ for i, x in enumerate(fileList):
 
         # read the picture
         img = cv2.imread(name_old)
-        img = img[130:1710, 1250:3180]
+        img = img[130:1710, 1260:3180]
         cv2.imwrite(name_new, img)
         print(x, ' ===> cropped')
     else:
